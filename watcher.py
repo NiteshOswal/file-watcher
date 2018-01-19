@@ -48,9 +48,6 @@ def set_interval(func, secs):
 
 class AppEventHandler(LoggingEventHandler):
 
-    def log_file_pool(self):
-        print(file_pool)
-
     def set_file_pool(self, event):
         if not event.is_directory:
             if event.event_type == EVENT_TYPE_MOVED:
