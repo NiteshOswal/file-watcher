@@ -34,7 +34,7 @@ opts["logger_path"] = path.join(opts["current_path"], "logs")
 if not path.exists(opts["logger_path"]):
     makedirs(opts["logger_path"])
 
-print("Watch Directory: " + opts["watch_path"])
+print("Now Watching:", opts["watch_path"])
 
 file_pool = OrderedDict()
 
@@ -78,19 +78,19 @@ class AppEventHandler(LoggingEventHandler):
         self.set_file_pool(event)
 
 def push_to_destination(file_path):
-    print("Pushing File: ", file_path)
+    print("Pushing File:", file_path)
     call(["scp", file_path, opts["destination_path"]])
     file_pool[file_path][0] = "completed"
 
 def remove_file(file_path):
-    print("Removing File: ", file_path)
+    print("Removing File:", file_path)
     del file_pool[file_path]
     if file_pool[file_path][0] != EVENT_TYPE_DELETED and path.exists(file_path):
         remove(file_path)
 
 def file_worker():
     for file, stats in file_pool.items():
-        print("File watching: " + file)
+        print("Watching file: ", file)
         if stats[1] + timedelta(seconds=40) <= datetime.now():
             remove_file(file)
         if stats[1] + timedelta(seconds=20) <= datetime.now() and stats[0] != "completed":
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     observer = Observer() # Observer
     observer.schedule(event_handler, opts["watch_path"], recursive=True)
     observer.start()
-    set_interval(file_worker, 10) # run the file worker in every 5 mins
+    set_interval(file_worker, 300) # run the file worker in every 5 mins
     try:
         while True:
             time.sleep(1)
