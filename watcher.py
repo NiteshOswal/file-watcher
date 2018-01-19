@@ -12,6 +12,10 @@ from getopts import getopts
 
 argv = getopts(sys.argv[1:])
 
+##
+# Important Note: Add the host's ~/.ssh/<public_key> to ~/.ssh/authorized_keys of the remote server, for this to work in "no hands" mode.
+##
+
 if "w" not in argv:
     print("You need to specify a directory to watch")
     sys.exit(0)
