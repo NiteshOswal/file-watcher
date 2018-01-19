@@ -91,9 +91,9 @@ def remove_file(file_path):
 def file_worker():
     for file, stats in file_pool.items():
         print("Watching file: ", file)
-        if stats[1] + timedelta(seconds=40) <= datetime.now():
+        if stats[1] + timedelta(minutes=10) <= datetime.now():
             remove_file(file)
-        if stats[1] + timedelta(seconds=20) <= datetime.now() and stats[0] != "completed":
+        if stats[1] + timedelta(minutes=20) <= datetime.now() and stats[0] != "completed":
             push_to_destination(file)
 
 if __name__ == "__main__":
