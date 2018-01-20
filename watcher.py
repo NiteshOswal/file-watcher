@@ -81,16 +81,16 @@ def push_to_destination(file_path):
 
 def remove_file(file_path):
     print("Removing File:", file_path)
-    del file_pool[file_path]
-    if file_pool[file_path][0] != EVENT_TYPE_DELETED and path.exists(file_path):
+    if path.exists(file_path) and file_pool[file_path][0] != EVENT_TYPE_DELETED:
         remove(file_path)
+    del file_pool[file_path]
 
 def file_worker():
     for file, stats in file_pool.items():
         print("Watching file: ", file)
-        if stats[1] + timedelta(minutes=10) <= datetime.now():
+        if stats[1] + timedelta(minutes=20) <= datetime.now():
             remove_file(file)
-        if stats[1] + timedelta(minutes=20) <= datetime.now() and stats[0] != "completed":
+        if stats[1] + timedelta(minutes=5) <= datetime.now() and stats[0] != "completed":
             push_to_destination(file)
 
 if __name__ == "__main__":
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     observer = Observer() # Observer
     observer.schedule(event_handler, opts["watch_path"], recursive=True)
     observer.start()
-    set_interval(file_worker, 300) # run the file worker in every 5 mins
+    set_interval(file_worker, 60) # run the file worker in every 5 mins
     try:
         while True:
             time.sleep(1)
