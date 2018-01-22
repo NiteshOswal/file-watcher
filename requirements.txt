@@ -1,4 +1,9 @@
 argh==0.26.2
+circus==0.14.0
+iowait==0.2
 pathtools==0.1.2
+psutil==5.4.3
 PyYAML==3.12
+pyzmq==16.0.3
+tornado==4.5.3
 watchdog==0.8.3
