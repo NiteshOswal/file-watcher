@@ -1,4 +1,4 @@
-#### A simple file watching & sync tools.
+#### A simple file watching & sync tool.
 
 ### Usage
 ```bash
